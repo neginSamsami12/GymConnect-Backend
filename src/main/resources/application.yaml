@@ -3,7 +3,7 @@ spring:
     name: gymconnect
 
   config:
-    import: optional:file:.env
+    import: optional:file:.env.properties
 
   datasource:
     url: ${DB_URL}
