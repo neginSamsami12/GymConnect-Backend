@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponse(userRepository.save(user));
     }
 
+    @Transactional
     @Override
     public UserResponse update(UUID id, UserUpdateRequest request) {
 
