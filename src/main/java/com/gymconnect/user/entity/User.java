@@ -1,11 +1,13 @@
 package com.gymconnect.user.entity;
 
+import com.gymconnect.user.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -15,6 +17,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "users", schema = "gymconnect")
+@DynamicUpdate
 public class User {
     @Id
     @ColumnDefault("gen_random_uuid()")
@@ -62,5 +65,10 @@ public class User {
     @ColumnDefault("now()")
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+    @NotNull
+    @Column(name = "gender", length = 10, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
 }

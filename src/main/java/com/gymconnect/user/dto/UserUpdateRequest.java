@@ -1,14 +1,19 @@
 package com.gymconnect.user.dto;
 
+import com.gymconnect.user.enums.Gender;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
 public record UserUpdateRequest(
 
+        @NotBlank
         @Size(max = 100)
         String firstName,
 
+        @NotBlank
         @Size(max = 100)
         String lastName,
 
@@ -20,5 +25,12 @@ public record UserUpdateRequest(
 
         LocalDate birthDate,
 
-        String address
+        String address,
+
+        @NotBlank
+        @Size(max = 15)
+        String nationalId,
+
+        @NotNull
+        Gender gender
 ) {}
