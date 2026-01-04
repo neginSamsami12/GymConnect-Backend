@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/classes")
 @RequiredArgsConstructor
@@ -26,6 +28,15 @@ public class ClassesController {
             @RequestPart(value = "image") MultipartFile image
     ) {
         ApiResponse apiResponse = classesService.create(request, image);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+    // GET /api/classes
+    // GET /api/classes?trainerId=...
+    @GetMapping
+    public ResponseEntity<ApiResponse> findAll(
+            @RequestParam(value = "trainerId", required = false) UUID trainerId
+    ) {
+        ApiResponse apiResponse = classesService.findAll(trainerId);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

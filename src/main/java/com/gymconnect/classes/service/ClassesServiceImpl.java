@@ -1,6 +1,7 @@
 package com.gymconnect.classes.service;
 
 import com.gymconnect.classes.dto.ClassCreateRequest;
+import com.gymconnect.classes.dto.ClassResponse;
 import com.gymconnect.classes.entity.Class;
 import com.gymconnect.classes.mapper.ClassMapper;
 import com.gymconnect.classes.repository.ClassRepository;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,6 +26,7 @@ public class ClassesServiceImpl implements ClassesService {
     private final ClassMapper classMapper;
     private final FileStorageService fileStorageService;
 
+    @Override
     @Transactional
     public ApiResponse create(
             ClassCreateRequest request,
@@ -45,5 +48,17 @@ public class ClassesServiceImpl implements ClassesService {
         }
 
         return ApiResponse.success(null);
+    }
+
+    @Override
+    @Transactional
+    public ApiResponse findAll(UUID trainerId) {
+
+        List<Class> entities = (trainerId != null)
+                ? classRepository.findAllByTrainer_Id(trainerId)
+                : classRepository.findAll();
+
+        List<ClassResponse> response = classMapper.toResponseList(entities);
+        return ApiResponse.success(response);
     }
 }
