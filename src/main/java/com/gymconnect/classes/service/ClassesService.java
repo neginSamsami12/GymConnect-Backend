@@ -1,0 +1,9 @@
+package com.gymconnect.classes.service;
+
+import com.gymconnect.classes.dto.ClassCreateRequest;
+import com.gymconnect.common.response.ApiResponse;
+import org.springframework.web.multipart.MultipartFile;
+
+public interface ClassesService {
+    ApiResponse create(ClassCreateRequest request, MultipartFile image);
+}
