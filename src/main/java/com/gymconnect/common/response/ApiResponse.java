@@ -7,29 +7,29 @@ import java.time.LocalDateTime;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiResponse<T> {
+public class ApiResponse {
 
     private final boolean success;
-    private final T data;
+    private final Object data;
     private final String message;
     private final LocalDateTime timestamp;
 
-    private ApiResponse(boolean success, T data, String message) {
+    private ApiResponse(boolean success, Object data, String message) {
         this.success = success;
         this.data = data;
         this.message = message;
         this.timestamp = LocalDateTime.now();
     }
 
-    public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(true, data, null);
+    public static ApiResponse success(Object data) {
+        return new ApiResponse(true, data, null);
     }
 
-    public static <T> ApiResponse<T> success(T data, String message) {
-        return new ApiResponse<>(true, data, message);
+    public static ApiResponse success(Object data, String message) {
+        return new ApiResponse(true, data, message);
     }
 
-    public static <T> ApiResponse<T> failure(String message) {
-        return new ApiResponse<>(false, null, message);
+    public static ApiResponse failure(String message) {
+        return new ApiResponse(false, null, message);
     }
 }

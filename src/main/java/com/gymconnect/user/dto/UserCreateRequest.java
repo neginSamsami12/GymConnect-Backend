@@ -23,14 +23,15 @@ public record UserCreateRequest(
         @Size(max = 20)
         String phone,
 
+        @NotNull
         LocalDate birthDate,
+
+        @NotNull
+        Gender gender,
 
         String address,
 
         @NotBlank
         @Size(max = 15)
-        String nationalId,
-
-        @NotNull
-        Gender gender
+        String nationalId
 ) {}

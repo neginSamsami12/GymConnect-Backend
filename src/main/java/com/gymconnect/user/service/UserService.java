@@ -1,18 +1,18 @@
 package com.gymconnect.user.service;
 
+import com.gymconnect.common.response.ApiResponse;
 import com.gymconnect.user.dto.UserCreateRequest;
-import com.gymconnect.user.dto.UserResponse;
 import com.gymconnect.user.dto.UserUpdateRequest;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
-    UserResponse create(UserCreateRequest request);
+    ApiResponse create(UserCreateRequest request, MultipartFile image);
 
-    UserResponse update(UUID id, UserUpdateRequest request);
+    ApiResponse update(UUID id, UserUpdateRequest request, MultipartFile image);
 
-    UserResponse findById(UUID id);
+    ApiResponse findById(UUID id);
 
-    List<UserResponse> findAll();
+    ApiResponse findAll();
 }

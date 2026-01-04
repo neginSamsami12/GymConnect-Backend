@@ -2,7 +2,6 @@ package com.gymconnect.user.dto;
 
 import com.gymconnect.user.enums.Gender;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -13,8 +12,8 @@ public record UserResponse(
         String email,
         String phone,
         LocalDate birthDate,
+        Gender gender,
         String address,
         String nationalId,
-        Instant createdAt,
-        Gender gender
+        String imageUrl
 ) {}

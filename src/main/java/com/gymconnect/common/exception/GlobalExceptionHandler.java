@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
 //    @ExceptionHandler(BusinessException.class)
-//    public ResponseEntity<ApiResponse<Void>> handleBusiness(BusinessException ex) {
+//    public ResponseEntity<ApiResponse> handleBusiness(BusinessException ex) {
 //        return ResponseEntity
 //                .badRequest()
 //                .body(ApiResponse.failure(ex.getMessage()));
 //    }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<Void>> handleGeneric(Exception ex) {
+    public ResponseEntity<ApiResponse> handleGeneric(Exception ex) {
         return ResponseEntity
                 .internalServerError()
                 .body(ApiResponse.failure("Unexpected error"));

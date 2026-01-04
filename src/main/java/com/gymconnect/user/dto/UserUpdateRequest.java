@@ -9,11 +9,9 @@ import java.time.LocalDate;
 
 public record UserUpdateRequest(
 
-        @NotBlank
         @Size(max = 100)
         String firstName,
 
-        @NotBlank
         @Size(max = 100)
         String lastName,
 
@@ -25,12 +23,10 @@ public record UserUpdateRequest(
 
         LocalDate birthDate,
 
+        Gender gender,
+
         String address,
 
-        @NotBlank
         @Size(max = 15)
-        String nationalId,
-
-        @NotNull
-        Gender gender
+        String nationalId
 ) {}

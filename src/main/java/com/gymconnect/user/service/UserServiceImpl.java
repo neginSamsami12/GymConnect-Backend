@@ -1,5 +1,7 @@
 package com.gymconnect.user.service;
 
+import com.gymconnect.common.response.ApiResponse;
+import com.gymconnect.common.storage.FileStorageService;
 import com.gymconnect.user.dto.*;
 import com.gymconnect.user.entity.User;
 import com.gymconnect.user.mapper.UserMapper;
@@ -8,57 +10,84 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final FileStorageService fileStorageService;
 
     @Override
-    public UserResponse create(UserCreateRequest request) {
+    @Transactional
+    public ApiResponse create(UserCreateRequest request, MultipartFile image) {
 
         if (userRepository.existsByNationalId(request.nationalId())) {
             throw new IllegalArgumentException("User with nationalId already exists");
         }
 
         User user = userMapper.toEntity(request);
-//        user.setPasswordHash(passwordEncoder.encode(request.password()));
 
-        return userMapper.toResponse(userRepository.save(user));
+        // todo: replace with real password flow
+        user.setPasswordHash(passwordEncoder.encode("123456"));
+
+        userRepository.save(user);
+
+        if (image != null && !image.isEmpty()) {
+            String imageUrl = fileStorageService.storeProfileImage(user.getId(), image);
+            user.setImageUrl(imageUrl);
+        }
+
+        UserResponse response = userMapper.toResponse(user);
+        return ApiResponse.success(response);
     }
 
-    @Transactional
     @Override
-    public UserResponse update(UUID id, UserUpdateRequest request) {
+    @Transactional
+    public ApiResponse update(UUID id,
+                              UserUpdateRequest request,
+                              MultipartFile image) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+        // update fields
         userMapper.updateEntity(request, user);
-        return userMapper.toResponse(user);
+
+        // update image if provided
+        if (image != null && !image.isEmpty()) {
+            String imageUrl = fileStorageService.storeProfileImage(user.getId(), image);
+            user.setImageUrl(imageUrl);
+        }
+
+        UserResponse response = userMapper.toResponse(user);
+        return ApiResponse.success(response);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public UserResponse findById(UUID id) {
-        return userRepository.findById(id)
-                .map(userMapper::toResponse)
+    public ApiResponse findById(UUID id) {
+
+        User userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        UserResponse user = userMapper.toResponse(userEntity);
+        return ApiResponse.success(user);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserResponse> findAll() {
-        return userRepository.findAll()
-                .stream()
-                .map(userMapper::toResponse)
-                .toList();
+    public ApiResponse findAll() {
+
+        List<User> userEntities = userRepository.findAll();
+        List<UserResponse> users = userMapper.toResponseList(userEntities);
+
+        return ApiResponse.success(users);
     }
 }

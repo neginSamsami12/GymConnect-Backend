@@ -50,6 +50,12 @@ public class User {
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
+    @Size(max = 10)
+    @NotNull
+    @Column(name = "gender", nullable = false, length = 10)
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     @Column(name = "address", length = Integer.MAX_VALUE)
     private String address;
 
@@ -66,9 +72,7 @@ public class User {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    @NotNull
-    @Column(name = "gender", length = 10, nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+    @Column(name = "image_url", length = Integer.MAX_VALUE)
+    private String imageUrl;
 
 }
