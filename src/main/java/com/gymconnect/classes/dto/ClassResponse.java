@@ -11,6 +11,7 @@ public record ClassResponse(
         String title,
         String description,
         Integer capacity,
+        String days,
         LocalTime scheduleTime,
         LocalDate startDate,
         LocalDate endDate,

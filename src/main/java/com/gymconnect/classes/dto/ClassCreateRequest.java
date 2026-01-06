@@ -22,6 +22,8 @@ public record ClassCreateRequest(
         @NotNull
         Integer capacity,
 
+        String days,
+
         @NotNull
         LocalTime scheduleTime,
 

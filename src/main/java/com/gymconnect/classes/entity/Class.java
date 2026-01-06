@@ -35,6 +35,9 @@ public class Class {
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
 
+    @Column(name = "days", length = Integer.MAX_VALUE)
+    private String days;
+
     @NotNull
     @Column(name = "capacity", nullable = false)
     private Integer capacity;

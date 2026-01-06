@@ -40,12 +40,12 @@ public class ClassesServiceImpl implements ClassesService {
         entity.setId(UUID.randomUUID());
         entity.setTrainer(trainer);
 
-        classRepository.save(entity);
-
         if (image != null && !image.isEmpty()) {
             String imageUrl = fileStorageService.storeClassImage(entity.getId(), image);
             entity.setImageUrl(imageUrl);
         }
+
+        classRepository.save(entity);
 
         return ApiResponse.success(null);
     }
