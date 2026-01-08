@@ -1,6 +1,9 @@
 package com.gymconnect.user.entity;
 
+import com.gymconnect.classes.entity.Class;
+import com.gymconnect.common.entity.*;
 import com.gymconnect.user.enums.Gender;
+import com.gymconnect.workout.entity.Workout;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,6 +14,8 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -43,7 +48,7 @@ public class User {
     @Column(name = "phone", length = 20)
     private String phone;
 
-    @Column(name = "password_hash", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "password_hash", length = Integer.MAX_VALUE)
     private String passwordHash;
 
     @NotNull
@@ -74,5 +79,38 @@ public class User {
 
     @Column(name = "image_url", length = Integer.MAX_VALUE)
     private String imageUrl;
+
+    @OneToMany(mappedBy = "user")
+    private Set<ActivityLog> activityLogs = new LinkedHashSet<>();
+
+    @OneToOne
+    private AthleteProfile athleteProfile;
+
+    @OneToMany(mappedBy = "user")
+    private Set<AttendanceLog> attendanceLogs = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<ClassRegistration> classRegistrations = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "trainer")
+    private Set<Class> classes = new LinkedHashSet<>();
+
+    @OneToOne
+    private EmployeeProfile employeeProfile;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Payment> payments = new LinkedHashSet<>();
+
+    @OneToOne
+    private TrainerProfile trainerProfile;
+
+    @ManyToMany
+    private Set<Role> roles = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "trainer")
+    private Set<Workout> trainerWorkouts = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "athlete")
+    private Set<Workout> athleteWorkouts = new LinkedHashSet<>();
 
 }

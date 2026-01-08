@@ -1,5 +1,7 @@
 package com.gymconnect.classes.entity;
 
+import com.gymconnect.common.entity.AttendanceLog;
+import com.gymconnect.common.entity.ClassRegistration;
 import com.gymconnect.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +13,8 @@ import org.hibernate.annotations.ColumnDefault;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -60,5 +64,11 @@ public class Class {
 
     @Column(name = "image_url", length = Integer.MAX_VALUE)
     private String imageUrl;
+
+    @OneToMany(mappedBy = "classField")
+    private Set<AttendanceLog> attendanceLogs = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "classField")
+    private Set<ClassRegistration> classRegistrations = new LinkedHashSet<>();
 
 }

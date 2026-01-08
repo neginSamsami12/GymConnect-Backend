@@ -9,6 +9,8 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -41,5 +43,7 @@ public class Workout {
     @Column(name = "created_at")
     private Instant createdAt;
 
+    @OneToMany(mappedBy = "workout")
+    private Set<WorkoutExercise> workoutExercises = new LinkedHashSet<>();
 
 }
