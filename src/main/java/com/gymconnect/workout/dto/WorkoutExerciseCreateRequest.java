@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 
 public record WorkoutExerciseCreateRequest(
 
+        Integer index,
         @NotBlank
         @Size(max = 200)
         String exerciseName,

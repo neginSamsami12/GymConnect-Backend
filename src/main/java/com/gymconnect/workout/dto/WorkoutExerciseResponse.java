@@ -3,7 +3,7 @@ package com.gymconnect.workout.dto;
 import java.util.UUID;
 
 public record WorkoutExerciseResponse(
-        UUID id,
+        Integer index,
         String exerciseName,
         Integer sets,
         Integer reps,

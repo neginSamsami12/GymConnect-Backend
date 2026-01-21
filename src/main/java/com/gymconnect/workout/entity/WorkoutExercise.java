@@ -22,6 +22,10 @@ public class WorkoutExercise {
     private UUID id;
 
     @NotNull
+    @Column(name = "index", nullable = false)
+    private Integer index;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "workout_id", nullable = false)
@@ -40,6 +44,5 @@ public class WorkoutExercise {
 
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
-
 
 }
