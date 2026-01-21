@@ -9,6 +9,6 @@ import java.util.UUID;
 public interface ClassesService {
     ApiResponse create(ClassCreateRequest request, MultipartFile image);
 
-    ApiResponse findAll(UUID trainerId);
+    ApiResponse findAll(UUID athleteId);
 
 }

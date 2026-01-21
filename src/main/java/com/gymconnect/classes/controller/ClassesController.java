@@ -31,12 +31,12 @@ public class ClassesController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
     // GET /api/classes
-    // GET /api/classes?trainerId=...
+    // GET /api/classes?athleteId=...
     @GetMapping
     public ResponseEntity<ApiResponse> findAll(
-            @RequestParam(value = "trainerId", required = false) UUID trainerId
+            @RequestParam(value = "athleteId", required = false) UUID athleteId
     ) {
-        ApiResponse apiResponse = classesService.findAll(trainerId);
+        ApiResponse apiResponse = classesService.findAll(athleteId);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

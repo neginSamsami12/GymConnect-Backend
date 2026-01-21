@@ -7,6 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface ClassMapper {
@@ -16,8 +17,21 @@ public interface ClassMapper {
     @Mapping(target = "imageUrl", ignore = true)
     Class toEntity(ClassCreateRequest request);
 
-    @Mapping(target = "trainerId", source = "trainer.id")
-    ClassResponse toResponse(Class entity);
+    default ClassResponse toResponse(Class entity) {
+        return ClassResponse.builder()
+                .id(entity.getId())
+                .days(entity.getDays())
+                .price(entity.getPrice())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .startDate(entity.getStartDate())
+                .endDate(entity.getEndDate())
+                .imageUrl(entity.getImageUrl())
+                .scheduleTime(entity.getScheduleTime())
+                .trainerName(entity.getTrainer().getFirstName() + " " + entity.getTrainer().getLastName())
+                .capacity(entity.getCapacity())
+                .build();
+    }
 
     List<ClassResponse> toResponseList(List<Class> entities);
 }
