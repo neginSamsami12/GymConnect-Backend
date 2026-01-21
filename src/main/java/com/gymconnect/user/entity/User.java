@@ -1,6 +1,8 @@
 package com.gymconnect.user.entity;
 
+import com.gymconnect.attendance.entity.AttendanceLog;
 import com.gymconnect.classes.entity.Class;
+import com.gymconnect.classes.entity.ClassRegistration;
 import com.gymconnect.common.entity.*;
 import com.gymconnect.user.enums.Gender;
 import com.gymconnect.workout.entity.Workout;
@@ -83,7 +85,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<ActivityLog> activityLogs = new LinkedHashSet<>();
 
-    @OneToOne
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private AthleteProfile athleteProfile;
 
     @OneToMany(mappedBy = "user")
@@ -95,13 +97,13 @@ public class User {
     @OneToMany(mappedBy = "trainer")
     private Set<Class> classes = new LinkedHashSet<>();
 
-    @OneToOne
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private EmployeeProfile employeeProfile;
 
     @OneToMany(mappedBy = "user")
     private Set<Payment> payments = new LinkedHashSet<>();
 
-    @OneToOne
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private TrainerProfile trainerProfile;
 
     @ManyToMany

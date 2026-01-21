@@ -1,6 +1,5 @@
-package com.gymconnect.common.entity;
+package com.gymconnect.classes.entity;
 
-import com.gymconnect.classes.entity.Class;
 import com.gymconnect.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

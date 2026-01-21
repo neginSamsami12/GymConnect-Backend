@@ -1,7 +1,6 @@
 package com.gymconnect.classes.entity;
 
-import com.gymconnect.common.entity.AttendanceLog;
-import com.gymconnect.common.entity.ClassRegistration;
+import com.gymconnect.attendance.entity.AttendanceLog;
 import com.gymconnect.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

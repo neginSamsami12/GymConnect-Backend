@@ -24,7 +24,7 @@ public class AthleteProfile {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private User users;
+    private User user;
 
     @NotNull
     @Column(name = "weight_kg", nullable = false)

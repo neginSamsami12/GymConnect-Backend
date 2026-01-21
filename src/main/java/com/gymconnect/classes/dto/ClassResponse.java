@@ -1,13 +1,16 @@
 package com.gymconnect.classes.dto;
 
+import lombok.Builder;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
+@Builder
 public record ClassResponse(
         UUID id,
-        UUID trainerId,
+        String trainerName,
         String title,
         String description,
         Integer capacity,

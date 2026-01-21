@@ -23,7 +23,7 @@ public class TrainerProfile {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private User users;
+    private User user;
 
     @Column(name = "certificate", length = Integer.MAX_VALUE)
     private String certificate;

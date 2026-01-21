@@ -3,7 +3,9 @@ package com.gymconnect.classes.service;
 import com.gymconnect.classes.dto.ClassCreateRequest;
 import com.gymconnect.classes.dto.ClassResponse;
 import com.gymconnect.classes.entity.Class;
+import com.gymconnect.classes.entity.ClassRegistration;
 import com.gymconnect.classes.mapper.ClassMapper;
+import com.gymconnect.classes.repository.ClassRegistrationRepository;
 import com.gymconnect.classes.repository.ClassRepository;
 import com.gymconnect.common.response.ApiResponse;
 import com.gymconnect.common.storage.FileStorageService;
@@ -14,8 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class ClassesServiceImpl implements ClassesService {
 
     private final ClassRepository classRepository;
     private final UserRepository userRepository;
+    private final ClassRegistrationRepository classRegistrationRepository;
     private final ClassMapper classMapper;
     private final FileStorageService fileStorageService;
 
@@ -52,11 +54,18 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     @Transactional
-    public ApiResponse findAll(UUID trainerId) {
+    public ApiResponse findAll(UUID athleteId) {
 
-        List<Class> entities = (trainerId != null)
-                ? classRepository.findAllByTrainer_Id(trainerId)
-                : classRepository.findAll();
+        List<Class> entities = new ArrayList<>();
+        if (athleteId != null) {
+            List<ClassRegistration> classRegistration = classRegistrationRepository.findByUser_Id(athleteId);
+            entities = classRegistration.stream()
+                    .map(ClassRegistration::getClassField)
+                    .toList();
+
+        } else {
+            entities = classRepository.findAll();
+        }
 
         List<ClassResponse> response = classMapper.toResponseList(entities);
         return ApiResponse.success(response);
