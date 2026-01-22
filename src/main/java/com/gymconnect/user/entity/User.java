@@ -57,7 +57,6 @@ public class User {
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
-    @Size(max = 10)
     @NotNull
     @Column(name = "gender", nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
