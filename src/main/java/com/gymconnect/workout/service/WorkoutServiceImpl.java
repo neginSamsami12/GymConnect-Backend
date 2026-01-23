@@ -4,6 +4,7 @@ import com.gymconnect.common.response.ApiResponse;
 import com.gymconnect.user.entity.User;
 import com.gymconnect.user.repository.UserRepository;
 import com.gymconnect.workout.dto.WorkoutCreateRequest;
+import com.gymconnect.workout.dto.WorkoutExerciseCreateRequest;
 import com.gymconnect.workout.dto.WorkoutExerciseResponse;
 import com.gymconnect.workout.dto.WorkoutResponse;
 import com.gymconnect.workout.entity.Workout;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,27 +32,26 @@ public class WorkoutServiceImpl implements WorkoutService {
     private final WorkoutExerciseMapper workoutExerciseMapper;
 
     @Override
-    @Transactional(readOnly = true)
-    public ApiResponse create(WorkoutCreateRequest request) {
+    @Transactional
+    public ApiResponse create(WorkoutCreateRequest request, UUID trainerId) {
 
-        User trainer = userRepository.findById(request.trainerId())
+        User trainer = userRepository.findById(trainerId)
                 .orElseThrow(() -> new IllegalArgumentException("Trainer not found"));
 
         User athlete = userRepository.findById(request.athleteId())
                 .orElseThrow(() -> new IllegalArgumentException("Athlete not found"));
 
-        // 1) ساخت Workout (بدون setId)
         Workout workout = workoutMapper.toEntity(request);
         workout.setTrainer(trainer);
         workout.setAthlete(athlete);
+        workout.setCreatedAt(Instant.now());
 
         workoutRepository.save(workout);
 
-        // 2) ساخت Exercises (بدون setId)
         List<WorkoutExercise> exerciseEntities = new ArrayList<>();
 
         if (request.exercises() != null && !request.exercises().isEmpty()) {
-            for (var exReq : request.exercises()) {
+            for (WorkoutExerciseCreateRequest exReq : request.exercises()) {
                 WorkoutExercise ex = workoutExerciseMapper.toEntity(exReq);
                 ex.setWorkout(workout);
                 exerciseEntities.add(ex);
@@ -58,22 +59,7 @@ public class WorkoutServiceImpl implements WorkoutService {
             workoutExerciseRepository.saveAll(exerciseEntities);
         }
 
-        // 3) پاسخ
-        WorkoutResponse workoutResponse = workoutMapper.toResponse(workout);
-        List<WorkoutExerciseResponse> exercisesResponse =
-                workoutExerciseMapper.toResponseList(exerciseEntities);
-
-        WorkoutResponse finalResponse = new WorkoutResponse(
-                workoutResponse.id(),
-                workoutResponse.trainerId(),
-                workoutResponse.athleteId(),
-                workoutResponse.title(),
-                workoutResponse.description(),
-                workoutResponse.createdAt(),
-                exercisesResponse
-        );
-
-        return ApiResponse.success(finalResponse);
+        return ApiResponse.success(null);
     }
 
     public ApiResponse findAll(UUID trainerId, UUID athleteId) {

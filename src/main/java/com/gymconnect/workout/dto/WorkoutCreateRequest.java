@@ -10,9 +10,6 @@ import java.util.UUID;
 public record WorkoutCreateRequest(
 
         @NotNull
-        UUID trainerId,
-
-        @NotNull
         UUID athleteId,
 
         @NotNull

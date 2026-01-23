@@ -20,7 +20,7 @@ public class WorkoutController {
 
     @PostMapping
     public ResponseEntity<ApiResponse> create(@RequestBody @Valid WorkoutCreateRequest request) {
-        ApiResponse apiResponse = workoutService.create(request);
+        ApiResponse apiResponse = workoutService.create(request, UUID.fromString("5ac3d10e-4868-4c43-957e-8fc3d308d5c1"));
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
     // نمونه‌ها:
