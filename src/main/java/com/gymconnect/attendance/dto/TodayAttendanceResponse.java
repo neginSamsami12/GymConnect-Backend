@@ -7,5 +7,5 @@ public record TodayAttendanceResponse(
         String lastName,
         String className,
         String checkInTime,
-        String checkOuTime
+        String checkOutTime
 ) {}

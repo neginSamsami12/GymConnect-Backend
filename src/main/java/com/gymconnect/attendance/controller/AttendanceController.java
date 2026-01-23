@@ -8,9 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/attendance")
+
 public class AttendanceController {
 
     private final AttendanceService attendanceService;
@@ -24,6 +27,14 @@ public class AttendanceController {
     public ResponseEntity<ApiResponse> getTodayAttendance() {
 
         ApiResponse result = attendanceService.getTodayAttendances();
+
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/check-out/{id}")
+    public ResponseEntity<ApiResponse> checkOut(@PathVariable UUID id) {
+
+        ApiResponse result = attendanceService.checkOut(id);
 
         return ResponseEntity.ok(result);
     }

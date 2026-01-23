@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -44,9 +45,21 @@ public class AttendanceServiceImpl implements AttendanceService {
         AttendanceLog log = AttendanceLog.builder()
                 .classField(clazz)
                 .user(user)
+                .checkIn(Instant.now())
                 .build();
 
+
         attendanceLogRepository.save(log);
+
+        return ApiResponse.success(null);
+    }
+
+    @Override
+    public ApiResponse checkOut(UUID id) {
+        AttendanceLog checkOut = attendanceLogRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ATTENDANCE_LOG_NOT_FIND"));
+        checkOut.setCheckOut(Instant.now());
+        attendanceLogRepository.save(checkOut);
 
         return ApiResponse.success(null);
     }
