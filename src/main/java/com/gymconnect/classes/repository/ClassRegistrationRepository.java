@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface ClassRegistrationRepository extends JpaRepository<ClassRegistration, UUID> {
     List<ClassRegistration> findByUser_Id(UUID userId);
+
+    boolean existsClassRegistrationByUser_Id(UUID userId);
 }

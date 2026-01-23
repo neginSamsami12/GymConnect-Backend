@@ -6,6 +6,7 @@ import com.gymconnect.user.dto.UserUpdateRequest;
 import com.gymconnect.user.entity.User;
 import org.mapstruct.*;
 
+import java.time.Instant;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -23,6 +24,12 @@ public interface UserMapper {
     void updateEntity(UserUpdateRequest request,
                       @MappingTarget User user);
 
+    @AfterMapping
+    default void setUpdatedAt(@MappingTarget User user) {
+        user.setUpdatedAt(Instant.now());
+    }
+
+    @Mapping(target = "registrationDate", source = "createdAt")
     UserResponse toResponse(User user);
 
     List<UserResponse> toResponseList(List<User> users);

@@ -1,5 +1,6 @@
 package com.gymconnect.user.service;
 
+import com.gymconnect.classes.repository.ClassRegistrationRepository;
 import com.gymconnect.common.response.ApiResponse;
 import com.gymconnect.common.storage.FileStorageService;
 import com.gymconnect.user.dto.*;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final FileStorageService fileStorageService;
+    private final ClassRegistrationRepository classRegistrationRepository;
 
     @Override
     @Transactional
@@ -36,6 +39,7 @@ public class UserServiceImpl implements UserService {
 
         // todo: replace with real password flow
         user.setPasswordHash(passwordEncoder.encode("123456"));
+        user.setCreatedAt(Instant.now());
 
         userRepository.save(user);
 
@@ -78,6 +82,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         UserResponse user = userMapper.toResponse(userEntity);
+        user.setIsActive(classRegistrationRepository.existsClassRegistrationByUser_Id(id));
         return ApiResponse.success(user);
     }
 
@@ -87,7 +92,9 @@ public class UserServiceImpl implements UserService {
 
         List<User> userEntities = userRepository.findAll();
         List<UserResponse> users = userMapper.toResponseList(userEntities);
-
+        for (UserResponse user : users) {
+            user.setIsActive(classRegistrationRepository.existsClassRegistrationByUser_Id(user.getId()));
+        }
         return ApiResponse.success(users);
     }
 }
