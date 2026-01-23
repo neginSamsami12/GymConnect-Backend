@@ -2,6 +2,7 @@ package com.gymconnect.attendance.service;
 
 import com.gymconnect.attendance.dto.AttendanceCreateRequest;
 import com.gymconnect.attendance.dto.TodayAttendanceResponse;
+import com.gymconnect.attendance.dto.WeeklyAttendanceResponse;
 import com.gymconnect.attendance.mapper.AttendanceMapper;
 import com.gymconnect.attendance.repository.AttendanceLogRepository;
 import com.gymconnect.classes.repository.ClassRepository;
@@ -75,7 +76,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         List<TodayAttendanceResponse> response =
                 attendanceLogRepository
-                        .findTodayAttendanceLogs(startOfDay, endOfDay)
+                        .findAttendanceLogBetweenDays(startOfDay, endOfDay)
                         .stream()
                         .map(a -> new TodayAttendanceResponse(
                                 a.getId(),
@@ -99,4 +100,28 @@ public class AttendanceServiceImpl implements AttendanceService {
                 .toLocalTime()
                 .format(TIME_FORMATTER);
     }
+
+    @Override
+    public ApiResponse getWeeklyAttendance() {
+        ZoneId zoneId = ZoneId.systemDefault();
+        LocalDate today = LocalDate.now(zoneId);
+        LocalDate startOfWeek = today.minusDays(6);
+        Instant startOfWeekInstant = startOfWeek.atStartOfDay(zoneId).toInstant();
+        Instant endOfWeekInstant = today.plusDays(1).atStartOfDay(zoneId).toInstant();
+
+        List<WeeklyAttendanceResponse> response = attendanceLogRepository
+                .findAttendanceLogBetweenDays(startOfWeekInstant, endOfWeekInstant)
+                .stream()
+                .map(a -> new WeeklyAttendanceResponse(
+                        a.getId(),
+                        a.getUser().getFirstName(),
+                        a.getUser().getLastName(),
+                        a.getClassField().getTitle(),
+                        a.getCheckIn().atZone(zoneId).toLocalDate()
+                ))
+                .toList();
+
+        return ApiResponse.success(response);
+    }
+
 }

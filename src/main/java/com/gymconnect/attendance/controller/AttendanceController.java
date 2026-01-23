@@ -38,4 +38,12 @@ public class AttendanceController {
 
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/week")
+    public ResponseEntity<ApiResponse> getWeeklyAttendance() {
+
+        ApiResponse result = attendanceService.getWeeklyAttendance();
+
+        return ResponseEntity.ok(result);
+    }
 }

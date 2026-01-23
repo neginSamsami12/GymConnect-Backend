@@ -22,10 +22,10 @@ public interface AttendanceLogRepository extends JpaRepository<AttendanceLog, UU
     WHERE a.checkIn >= :startOfDay
       AND a.checkIn < :endOfDay
 """)
-    List<AttendanceLog> findTodayAttendanceLogs(
+    List<AttendanceLog> findAttendanceLogBetweenDays(
             @Param("startOfDay") Instant startOfDay,
             @Param("endOfDay") Instant endOfDay
     );
 
-
 }
+

@@ -10,4 +10,5 @@ public interface AttendanceService {
     ApiResponse getTodayAttendances();
     ApiResponse create(AttendanceCreateRequest req);
     ApiResponse checkOut(UUID id);
+    ApiResponse getWeeklyAttendance();
 }
