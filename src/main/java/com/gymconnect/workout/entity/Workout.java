@@ -42,7 +42,7 @@ public class Workout {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "workout")
-    @OrderBy("orderIndex DESC")
+    @OrderBy("orderIndex ASC")
     private List<WorkoutExercise> workoutExercises = new ArrayList<>();
 
 }
