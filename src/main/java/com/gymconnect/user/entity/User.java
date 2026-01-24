@@ -4,6 +4,7 @@ import com.gymconnect.attendance.entity.AttendanceLog;
 import com.gymconnect.classes.entity.Class;
 import com.gymconnect.classes.entity.ClassRegistration;
 import com.gymconnect.common.entity.*;
+import com.gymconnect.common.entity.Role;
 import com.gymconnect.user.enums.Gender;
 import com.gymconnect.workout.entity.Workout;
 import jakarta.persistence.*;
@@ -105,7 +106,12 @@ public class User {
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private TrainerProfile trainerProfile;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private Set<Role> roles = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "trainer")
