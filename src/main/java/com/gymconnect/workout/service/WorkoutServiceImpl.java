@@ -62,49 +62,37 @@ public class WorkoutServiceImpl implements WorkoutService {
         return ApiResponse.success(null);
     }
 
+    @Override
     public ApiResponse findAll(UUID trainerId, UUID athleteId) {
 
-        // 1) واکشی workouts با فیلتر اختیاری
         List<Workout> workouts;
         if (trainerId != null) {
-            workouts = workoutRepository.findAllByTrainer_Id((trainerId));
+            workouts = workoutRepository.findAllByTrainerIdOrderByCreatedAtDesc(trainerId);
         } else if (athleteId != null) {
-            workouts = workoutRepository.findAllByAthlete_Id((athleteId));
+            workouts = workoutRepository.findAllByAthleteIdOrderByCreatedAtDesc(athleteId);
         } else {
-            workouts = workoutRepository.findAll();
+            workouts = workoutRepository.findAllOrderByCreatedAtDesc();
         }
 
         if (workouts.isEmpty()) {
             return ApiResponse.success(Collections.emptyList());
         }
 
-        // 2) واکشی exercises با یک query (به جای N+1)
-        List<UUID> workoutIds = workouts.stream()
-                .map(Workout::getId)
-                .toList();
-
-        List<WorkoutExercise> allExercises =
-                workoutExerciseRepository.findAllByWorkout_IdIn((workoutIds));
-
-        Map<UUID, List<WorkoutExercise>> exerciseMap = allExercises.stream()
-                .collect(Collectors.groupingBy(ex -> ex.getWorkout().getId()));
-
-        // 3) ساخت WorkoutResponse نهایی (با exercises)
         List<WorkoutResponse> responses = workouts.stream().map(w -> {
-            WorkoutResponse base = workoutMapper.toResponse(w);
+            String athleteName = w.getAthlete().getFirstName() + " " + w.getAthlete().getLastName();
+            String trainerName = w.getTrainer().getFirstName() + " " + w.getTrainer().getLastName();
 
             List<WorkoutExerciseResponse> exResponses = workoutExerciseMapper
-                    .toResponseList(exerciseMap.getOrDefault(w.getId(), List.of()));
+                    .toResponseList(w.getWorkoutExercises());
 
-            return new WorkoutResponse(
-                    base.id(),
-                    base.trainerId(),
-                    base.athleteId(),
-                    base.title(),
-                    base.description(),
-                    base.createdAt(),
-                    exResponses
-            );
+            return WorkoutResponse.builder()
+                    .id(w.getId())
+                    .athleteName(athleteName)
+                    .trainerName(trainerName)
+                    .title(w.getTitle())
+                    .description(w.getDescription())
+                    .exercises(exResponses)
+                    .build();
         }).toList();
 
         return ApiResponse.success(responses);

@@ -15,6 +15,7 @@ public interface WorkoutExerciseMapper {
     @Mapping(target = "workout", ignore = true)
     WorkoutExercise toEntity(WorkoutExerciseCreateRequest request);
 
+    @Mapping(target = "index", source = "orderIndex")
     WorkoutExerciseResponse toResponse(WorkoutExercise entity);
 
     List<WorkoutExerciseResponse> toResponseList(List<WorkoutExercise> entities);

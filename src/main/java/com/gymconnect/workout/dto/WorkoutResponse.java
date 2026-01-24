@@ -1,15 +1,22 @@
 package com.gymconnect.workout.dto;
 
-import java.time.Instant;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 import java.util.UUID;
 
-public record WorkoutResponse(
-        UUID id,
-        UUID trainerId,
-        UUID athleteId,
-        String title,
-        String description,
-        Instant createdAt,
-        List<WorkoutExerciseResponse> exercises
-) {}
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class WorkoutResponse {
+    private UUID id;
+    private String trainerName;
+    private String athleteName;
+    private String title;
+    private String description;
+    private List<WorkoutExerciseResponse> exercises;
+}

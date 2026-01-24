@@ -15,8 +15,6 @@ public interface WorkoutMapper {
     @Mapping(target = "createdAt", ignore = true)
     Workout toEntity(WorkoutCreateRequest request);
 
-    @Mapping(target = "trainerId", source = "trainer.id")
-    @Mapping(target = "athleteId", source = "athlete.id")
     @Mapping(target = "exercises", ignore = true)
     WorkoutResponse toResponse(Workout entity);
 }

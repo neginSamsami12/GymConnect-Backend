@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -23,7 +22,7 @@ public class WorkoutExercise {
 
     @NotNull
     @Column(name = "index", nullable = false)
-    private Integer index;
+    private Integer orderIndex;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

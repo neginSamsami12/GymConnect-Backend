@@ -8,6 +8,4 @@ import java.util.UUID;
 public interface WorkoutService {
     ApiResponse create(WorkoutCreateRequest request, UUID trainerId);
     ApiResponse findAll(UUID trainerId, UUID athleteId);
-
-
 }

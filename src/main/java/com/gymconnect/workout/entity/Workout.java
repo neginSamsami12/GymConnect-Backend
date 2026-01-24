@@ -9,9 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -44,6 +42,7 @@ public class Workout {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "workout")
-    private Set<WorkoutExercise> workoutExercises = new LinkedHashSet<>();
+    @OrderBy("orderIndex DESC")
+    private List<WorkoutExercise> workoutExercises = new ArrayList<>();
 
 }
