@@ -54,4 +54,10 @@ public class UserController {
         ApiResponse apiResponse = userService.findById(id);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<UUID> deleteUser(@PathVariable UUID id){
+        userService.deleteUser(id);
+        return ResponseEntity.ok(id);
+    }
 }

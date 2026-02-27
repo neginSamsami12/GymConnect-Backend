@@ -97,4 +97,17 @@ public class UserServiceImpl implements UserService {
         }
         return ApiResponse.success(users);
     }
+
+    @Override
+    public UserResponse deleteUser(UUID uuid) {
+        User userEntity = userRepository.findById(uuid)
+                .orElseThrow(()-> new IllegalArgumentException("user does not exist"));
+
+        userRepository.delete(userEntity);
+
+        return(userMapper.toResponse(userEntity));
+
+    }
+
+
 }
